@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import scipy.stats as sts
 from sklearn.model_selection import train_test_split
 from sklearn.feature_selection import SelectKBest
-from sklearn.feature_selection import chi2
+from sklearn.feature_selection import f_classif
 from sklearn.ensemble import ExtraTreesClassifier
 from sklearn.feature_selection import SelectFromModel
 
@@ -17,6 +17,8 @@ class DataHandler(object):
         self.labels = ['bike', 'climbing', 'descending',
                         'gymbike',  'jumping', 'running',
                         'standing',  'treadmill', 'walking']
+        self.new_inputs = []
+        self.new_y = None
 
     def set_inputs(self):
         for i in range(1, 10):
@@ -113,24 +115,31 @@ class DataHandler(object):
 
         return new_X, new_y
 
+    def radomized_blocks(self):
+        indices = np.arange(0, 4500)
+        np.random.shuffle(indices)
+        for i in range(9):
+            X, y = self.calc_macroclass_feat(i)
+            X = X[indices, :]
+            if i == 8:
+                y = y[indices]
+                self.new_y = y
+            self.new_inputs.append(X)
+        return self.new_inputs
+
     def concatenate_attrs(self):
         block_lst = []
         for i in range(9):
             X, y = self.calc_macroclass_feat(i)
-            print(X.shape)
             block_lst.append(X)
         new_X = np.concatenate(block_lst, axis=1)
         return new_X, y
 
     def define_test_train_val(self):
         X,y = self.concatenate_attrs()
-        self.X_train, X_test, self.y_train, y_test = train_test_split(X, y, test_size=.4, random_state=7)
-        self.X_test, self.X_val, self.y_test, self.y_val = train_test_split(X_test, y_test, test_size=.5, random_state=41)
-
-    def select_kBest(self):
-        sel_kbest = SelectKBest(chi2, k=45).fit(self.X_train, self.y_train)
-        print(sel_kbest.scores_)
-
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.4, random_state=7)
+        X_test, X_val, y_test, y_val = train_test_split(X_test, y_test, test_size=.5, random_state=41)
+        return X_train, X_test, X_val, y_train, y_test, y_val
 
 def get_entropy(row):
     h = sts.entropy(pd.Series(row).value_counts())/45.0
