@@ -21,7 +21,7 @@ class DataHandler(object):
         self.new_y = None
 
     def set_inputs(self):
-        for i in range(1, 10):
+        for i in range(1,10):
             self.inputs.append(self.look_at_sensor(i))
 
     def look_at_sensor(self, n_sensor):
@@ -62,7 +62,6 @@ class DataHandler(object):
         plt.show()
 
     def calc_macroclass_feat(self, block):
-        print(block)
         X = self.inputs[block][:, :-1]
         y = self.inputs[block][:, -1]
 
@@ -89,9 +88,7 @@ class DataHandler(object):
         X = np.concatenate(macro_feat).T
 
         if n_rows < 4500 :
-            print('this is the case')
             X, y = self.fill_absent_data(X, y)
-        print(type(X))
 
         return X, y
 
@@ -121,11 +118,11 @@ class DataHandler(object):
         for i in range(9):
             X, y = self.calc_macroclass_feat(i)
             X = X[indices, :]
-            if i == 8:
+            if i == 0:
                 y = y[indices]
                 self.new_y = y
             self.new_inputs.append(X)
-        return self.new_inputs
+        return self.new_inputs, self.new_y
 
     def concatenate_attrs(self):
         block_lst = []

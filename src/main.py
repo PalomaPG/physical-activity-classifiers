@@ -1,14 +1,15 @@
 import sys
 import numpy as np
-
 from DataHandler import DataHandler
+from ClassifierMethods import ClassifierMethods
+
 
 def main(path):
-    dh = DataHandler(sys.argv[1])
+    dh = DataHandler(path)
     dh.set_inputs()
-    new_inputs = dh.radomized_blocks()
-    lim_train = int(4500*0.6)
-    lim_test = int(4500*0.6) + int(4500*0.2)
+    new_inputs, new_y = dh.radomized_blocks()
+    cls_mth = ClassifierMethods(new_inputs, new_y,0.6, 0.2)
+    cls_mth.train_and_class()
 
 
 if __name__ == '__main__':
