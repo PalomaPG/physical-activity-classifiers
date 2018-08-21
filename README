@@ -1,0 +1,18 @@
+Ejecución del código
+--------------------
+--------------------
+
+
+El diseño de este programa se realizó usando Python3.6. Para su correcto funcionamiento se requieren
+las siguientes librerías
+
+- Matplotlib 2.2.3
+- SciKit-learn 0.19.2
+- Numpy 1.15
+
+La ejecución del código es como sigue:
+
+python main.py 'path-to-dataset'
+
+Donde 'path-to-dataset' es el directorio (dirección completa) donde está guardado el conjunto de datos
+(conservando estructura original.

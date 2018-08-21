@@ -21,7 +21,7 @@ class DataHandler(object):
         self.new_y = None
 
     def set_inputs(self):
-        for i in range(1,10):
+        for i in range(1, 10):
             self.inputs.append(self.look_at_sensor(i))
 
     def look_at_sensor(self, n_sensor):

@@ -14,14 +14,14 @@ class FeatureSelector(object):
         self.sel_kbest.fit(X_train, y_train)
         return np.argsort(self.sel_kbest.scores_)
 
-    def kBest_modify_data(self, X_train, X_test, X_val):
-        return self.sel_kbest.transform(X_train), self.sel_kbest.transform(X_test), self.sel_kbest.transform(X_val)
+    def kBest_fit(self, X_train, X_input):
+        return self.sel_kbest.transform(X_train), self.sel_kbest.transform(X_input)
 
     def extree_score(self, X_train, y_train):
         self.extree_clf.fit(X_train, y_train)
         return np.argsort(self.extree_clf.feature_importances_)
 
-    def extree_fit(self, X_train, X_test, X_val):
+    def extree_fit(self, X_train, X_input):
         model = SelectFromModel(self.extree_clf, prefit=True)
-        return model.transform(X_train), model.transform(X_test), model.transform(X_val)
+        return model.transform(X_train), model.transform(X_input)
 
